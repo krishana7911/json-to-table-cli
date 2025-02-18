@@ -1,0 +1,24 @@
+{
+  "name": "json-to-table-cli",
+  "version": "1.0.0",
+  "description": "A CLI tool to convert JSON data into Markdown tables",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "json-to-table-cli"
+  },
+  "keywords": [
+    "json",
+    "markdown",
+    "cli",
+    "table"
+  ],
+  "author": "Krishana Gautam",
+  "license": "MIT",
+  "dependencies": {
+    "yargs": "^17.7.2"
+  }
+}
