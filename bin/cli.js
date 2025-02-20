@@ -10,10 +10,10 @@ const fs = require('fs');
 
     if (args.url) {
         data = await fetchData.fetchFromUrl(args.url);
-    } else if (args.input) {
-        data = fetchData.fetchFromFile(args.input);
+    } else if (args.file) {  // Changed from 'input' to 'file'
+        data = fetchData.fetchFromFile(args.file);
     } else {
-        console.error("Error: Please provide either --url or --input");
+        console.error("Error: Please provide either --url or --file");
         process.exit(1);
     }
 
