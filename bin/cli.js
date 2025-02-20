@@ -3,10 +3,10 @@
 const args = require('minimist')(process.argv.slice(2));
 const fetchData = require('../lib/fetchData');
 const { jsonToMarkdown } = require('../lib/jsonToMarkdown');
-const { csvToMarkdown } = require('../lib/csvToMarkdown'); // New import for CSV
+const { csvToMarkdown } = require('../lib/csvToMarkdown');
 const fs = require('fs');
 
-// Display help message
+// Display help
 const showHelp = () => {
     console.log(`
 🚀 JSON to Table CLI - Convert JSON/CSV to Markdown Tables
@@ -15,15 +15,16 @@ Usage:
   json-to-table-cli [options]
 
 Options:
-  --url <api-url>     Fetch JSON from an API and convert to a Markdown table.
-  --file <input.json> Convert a local JSON file to a Markdown table.
-  --csv <input.csv>   Convert a local CSV file to a Markdown table.
+  --url <api-url>     Fetch JSON from an API and convert to Markdown.
+  --file <input.json> Convert a local JSON file to Markdown.
+  --csv <input.csv>   Convert a local CSV file to Markdown.
   --output <output.md> Save the generated table to a file.
+  --flatten           Flatten nested JSON into a table.
   --help              Show this help message and exit.
 
 Examples:
-  json-to-table-cli --url https://jsonplaceholder.typicode.com/users --output table.md
-  json-to-table-cli --file data.json --output table.md
+  json-to-table-cli --url https://jsonplaceholder.typicode.com/users --output table.md --flatten
+  json-to-table-cli --file data.json --output table.md --flatten
   json-to-table-cli --csv data.csv --output table.md
 
 ✨ For more information, check the README.md.
@@ -31,7 +32,6 @@ Examples:
 };
 
 (async () => {
-    // Show help if --help or -h is passed
     if (args.help || args.h) {
         showHelp();
         process.exit(0);
@@ -41,25 +41,21 @@ Examples:
     let markdownTable;
 
     try {
-        // Handle JSON from API or file
         if (args.url) {
             data = await fetchData.fetchFromUrl(args.url);
             markdownTable = jsonToMarkdown(data);
         } else if (args.file) {
             data = fetchData.fetchFromFile(args.file);
             markdownTable = jsonToMarkdown(data);
-        }
-        // Handle CSV input
-        else if (args.csv) {
+        } else if (args.csv) {
             markdownTable = csvToMarkdown(args.csv);
-        }
-        else {
+        } else {
             console.error("❌ Error: Please provide --url, --file, or --csv.");
             showHelp();
             process.exit(1);
         }
 
-        // Output result
+        // Write output
         if (args.output) {
             fs.writeFileSync(args.output, markdownTable);
             console.log(`✅ Table saved to ${args.output}`);
